@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "895499948977",
+    "project_id": "szallasfoglalo-mobil",
+    "storage_bucket": "szallasfoglalo-mobil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895499948977:android:4f0cc5aa8406e46daa2390",
+        "android_client_info": {
+          "package_name": "com.example.szallasfoglalo_mobil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8d-mZIa41TceE-LXF1MOKW4pP_eWgNWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

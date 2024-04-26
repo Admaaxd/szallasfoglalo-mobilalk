@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary branding color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorOnPrimary">@color/background</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Style for TextViews -->
+    <style name="LoginScreenText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/secondary</item>
+    </style>
+
+    <!-- Style for EditText -->
+    <style name="LoginScreenEditText">
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <!-- Style for Buttons -->
+    <style name="LoginScreenButton">
+        <item name="android:backgroundTint">@color/buttonColor</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <!-- Style for the login screen container -->
+    <style name="LoginScreenContainer">
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <!-- Customize the text size and other text attributes as needed -->
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

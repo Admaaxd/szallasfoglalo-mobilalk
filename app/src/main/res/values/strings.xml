@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">szallasfoglalo-mobil</string>
+    <string name="accommodation_reservation">Accommodation reservation</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="register_now" />
+    <string name="registration">Registration</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="password_register">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_now_button">Register Now</string>
+    <string name="about">About</string>
+    <string name="my_accommodations">My Accommodations</string>
+    <string name="log_out">Log Out</string>
+    <string name="accommodation_8">Accommodation 8</string>
+    <string name="accommodationBook">accommodationBook</string>
+    <string name="AccommodationBook">AccommodationBook</string>
+    <string name="accommodation_image" />
+    <string name="price_format">Price: $%1$.1f/day</string>
+    <string name="channel_name">Booking Notifications</string>
+    <string name="channel_description">Notifications for booking confirmations</string>
+</resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvAppName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/AccommodationBook"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp" />
+
+                <EditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginBottom="8dp"
+                    style="@style/LoginScreenEditText"
+                    android:autofillHints="" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="16dp"
+                    style="@style/LoginScreenEditText"
+                    android:autofillHints="" />
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="login"
+                    android:text="@string/login"
+                    android:layout_marginBottom="16dp"
+                    style="@style/LoginScreenButton" />
+
+                <TextView
+                    android:id="@+id/tvRegisterPrompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/don_t_have_an_account"
+                    android:layout_marginBottom="8dp" />
+
+                <Button
+                    android:id="@+id/btnRegister"
+                    style="@style/LoginScreenButton"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="register"
+                    android:text="@string/register" />
+
+        </LinearLayout>
+</ScrollView>
