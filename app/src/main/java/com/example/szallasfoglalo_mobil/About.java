@@ -55,6 +55,15 @@ public class About extends AppCompatActivity {
 
         animateTextColor(tvAccommodationDescription);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ValueAnimator colorAnimator = (ValueAnimator) findViewById(R.id.tvAccommodationDescription).getTag();
+        if (colorAnimator != null) {
+            colorAnimator.cancel();
+        }
+    }
     private void animateTextColor(TextView textView) {
         final int colorStart = Color.RED;
         final int colorEnd = Color.BLUE;
@@ -66,6 +75,15 @@ public class About extends AppCompatActivity {
 
         colorAnimator.addUpdateListener(animator -> textView.setTextColor((int) animator.getAnimatedValue()));
         colorAnimator.start();
+
+        textView.setTag(colorAnimator);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TextView tvAccommodationDescription = findViewById(R.id.tvAccommodationDescription);
+        animateTextColor(tvAccommodationDescription);
     }
 
     @Override
@@ -95,5 +113,4 @@ public class About extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

@@ -56,6 +56,11 @@ public class RegisterActivity extends AppCompatActivity {
         String password = etRegPassword.getText().toString();
         String confirmPassword = etRegConfirmPassword.getText().toString();
 
+        if (userName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, "All fields must be filled out.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (!password.equals(confirmPassword)) {
             Log.e(LOG_TAG, "The two passwords do not match!");
             return;

@@ -62,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         String userName = etUsername.getText().toString();
         String password = etPassword.getText().toString();
 
+        if (userName.isEmpty() || password.isEmpty()) {
+            Toast.makeText(MainActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             proceedWithLogin(userName, password);
         } else {

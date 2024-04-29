@@ -77,7 +77,10 @@ public class BookingActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
 
         bookNowButton.setOnClickListener(v -> {
-
+            if (startDate.isEmpty() || endDate.isEmpty()) {
+                Toast.makeText(this, "Please choose both start and end dates before booking.", Toast.LENGTH_LONG).show();
+                return;
+            }
             String name = getIntent().getStringExtra("ACCOMMODATION_NAME");
             int imageResource = getIntent().getIntExtra("ACCOMMODATION_IMAGE_RESOURCE", 0);
             String location = getIntent().getStringExtra("ACCOMMODATION_LOCATION");
@@ -117,6 +120,18 @@ public class BookingActivity extends AppCompatActivity {
 
     private void showDatePickerDialog(boolean isStartDate) {
         final Calendar calendar = Calendar.getInstance();
+        int mYear = year;
+        int mMonth = month;
+        int mDay = day;
+
+        if (!isStartDate && !startDate.isEmpty()) {
+            String[] parts = startDate.split("/");
+            mYear = Integer.parseInt(parts[2]);
+            mMonth = Integer.parseInt(parts[1]) - 1;
+            mDay = Integer.parseInt(parts[0]);
+
+            calendar.set(mYear, mMonth, mDay);
+        }
         DatePickerDialog datePickerDialog = new DatePickerDialog(BookingActivity.this,
                 (view, yearSelected, monthOfYear, dayOfMonth) -> {
                     String date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + yearSelected;
@@ -127,7 +142,11 @@ public class BookingActivity extends AppCompatActivity {
                         endDate = date;
                         accommodationEndDateTextView.setText(date);
                     }
-                }, year, month, day);
+                }, mYear, mMonth, mDay);
+
+        if (!isStartDate && !startDate.isEmpty()) {
+            datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        }
         datePickerDialog.show();
     }
 

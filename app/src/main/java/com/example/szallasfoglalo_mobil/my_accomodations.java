@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,8 +59,15 @@ public class my_accomodations extends AppCompatActivity {
         Gson gson = new Gson();
 
         LinearLayout container = findViewById(R.id.accommodationsContainer);
+        TextView textViewNoReservations = findViewById(R.id.textViewNoReservations);
+
         container.removeAllViews();
 
+        if (allEntries.isEmpty()){
+            textViewNoReservations.setVisibility(View.VISIBLE);
+        }
+        else{
+            textViewNoReservations.setVisibility(View.GONE);
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             String json = (String) entry.getValue();
             Accommodation accommodation = gson.fromJson(json, Accommodation.class);
@@ -74,7 +82,6 @@ public class my_accomodations extends AppCompatActivity {
             Button changeDateButton = new Button(this);
             changeDateButton.setText("Change Date");
             changeDateButton.setOnClickListener(v -> {
-                // Show DatePickerDialogs to select new start and end dates
                 showChangeDateDialog(accommodation, entry.getKey());
             });
             container.addView(changeDateButton);
@@ -82,10 +89,23 @@ public class my_accomodations extends AppCompatActivity {
             Button deleteButton = new Button(this);
             deleteButton.setText("Delete Reservation");
             deleteButton.setOnClickListener(v -> {
-                deleteAccommodation(entry.getKey());
+                confirmDeleteDialog(entry.getKey());
             });
             container.addView(deleteButton);
         }
+        }
+    }
+
+    private void confirmDeleteDialog(String accommodationKey) {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirm Deletion")
+                .setMessage("Are you sure you want to delete this reservation?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    deleteAccommodation(accommodationKey);
+                })
+                .setNegativeButton("Cancel", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void showChangeDateDialog(Accommodation accommodation, String accommodationKey) {
@@ -93,12 +113,17 @@ public class my_accomodations extends AppCompatActivity {
             String startDate = dayOfMonth + "/" + (month + 1) + "/" + year;
             accommodation.setStartDate(startDate);
 
+            Calendar minEndDate = Calendar.getInstance();
+            minEndDate.set(year, month, dayOfMonth);
+
             DatePickerDialog endDatePicker = new DatePickerDialog(my_accomodations.this, (view2, year2, month2, dayOfMonth2) -> {
                 String endDate = dayOfMonth2 + "/" + (month2 + 1) + "/" + year2;
                 accommodation.setEndDate(endDate);
 
                 saveUpdatedAccommodation(accommodation, accommodationKey);
             }, year, month, dayOfMonth);
+
+            endDatePicker.getDatePicker().setMinDate(minEndDate.getTimeInMillis());
             endDatePicker.setTitle("Select End Date");
             endDatePicker.show();
         };
@@ -108,6 +133,7 @@ public class my_accomodations extends AppCompatActivity {
         startDatePicker.setTitle("Select Start Date");
         startDatePicker.show();
     }
+
 
     private void saveUpdatedAccommodation(Accommodation accommodation, String accommodationKey) {
         SharedPreferences preferences = getSharedPreferences("booked_accommodations", MODE_PRIVATE);

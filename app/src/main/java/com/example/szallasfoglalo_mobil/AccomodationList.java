@@ -81,7 +81,6 @@ public class AccomodationList extends AppCompatActivity implements Accommodation
                             Accommodation accommodation = document.toObject(Accommodation.class);
                             accommodations.add(accommodation);
                         }
-                        // Set the adapter after fetching data
                         AccommodationAdapter adapter = new AccommodationAdapter(accommodations, AccomodationList.this);
                         RecyclerView rvAccommodations = findViewById(R.id.accommodationRecyclerView);
                         rvAccommodations.setAdapter(adapter);
