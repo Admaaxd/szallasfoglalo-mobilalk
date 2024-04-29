@@ -23,4 +23,5 @@
     <string name="price_format">Price: $%1$.1f/day</string>
     <string name="channel_name">Booking Notifications</string>
     <string name="channel_description">Notifications for booking confirmations</string>
+    <string name="Email" />
 </resources>

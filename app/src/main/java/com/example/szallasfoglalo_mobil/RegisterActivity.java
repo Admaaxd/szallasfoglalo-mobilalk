@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (!password.equals(confirmPassword)) {
-            Log.e(LOG_TAG, "The two passwords do not match!");
+            Toast.makeText(this, "The two passwords do not match!", Toast.LENGTH_LONG).show();
             return;
         }
 

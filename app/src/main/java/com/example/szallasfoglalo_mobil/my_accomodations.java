@@ -27,10 +27,12 @@ import java.util.Map;
 
 public class my_accomodations extends AppCompatActivity {
 
+    private AccommodationService accommodationService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_accomodations);
+        accommodationService = new AccommodationService(this);
 
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         setSupportActionBar(toolbar);
@@ -54,46 +56,43 @@ public class my_accomodations extends AppCompatActivity {
     }
 
     private void displayBookedAccommodations() {
-        SharedPreferences preferences = getSharedPreferences("booked_accommodations", MODE_PRIVATE);
-        Map<String, ?> allEntries = preferences.getAll();
-        Gson gson = new Gson();
+        accommodationService.getAllAccommodations(() -> {
+        }, () -> {
+            Toast.makeText(this, "Failed to load accommodations.", Toast.LENGTH_LONG).show();
+        }, accommodations -> {
+            LinearLayout container = findViewById(R.id.accommodationsContainer);
+            TextView textViewNoReservations = findViewById(R.id.textViewNoReservations);
+            container.removeAllViews();
 
+            if (accommodations.isEmpty()) {
+                textViewNoReservations.setVisibility(View.VISIBLE);
+            } else {
+                textViewNoReservations.setVisibility(View.GONE);
+                for (Accommodation accommodation : accommodations) {
+                    addAccommodationView(accommodation);
+                }
+            }
+        });
+    }
+
+    private void addAccommodationView(Accommodation accommodation) {
         LinearLayout container = findViewById(R.id.accommodationsContainer);
-        TextView textViewNoReservations = findViewById(R.id.textViewNoReservations);
+        TextView textView = new TextView(this);
+        String text = accommodation.getName() + "\n" + accommodation.getLocation() + "\nPrice: " + accommodation.getPrice() + "$/day" + "\nStay from: " + accommodation.getStartDate() + " to " + accommodation.getEndDate() + "\n" + "\n" + accommodation.getDescription();
+        textView.setText(text);
+        textView.setContentDescription("Accommodation details: " + text);
+        textView.setPadding(10, 10, 10, 10);
+        container.addView(textView);
 
-        container.removeAllViews();
+        Button changeDateButton = new Button(this);
+        changeDateButton.setText("Change Date");
+        changeDateButton.setOnClickListener(v -> showChangeDateDialog(accommodation, accommodation.getName()));
+        container.addView(changeDateButton);
 
-        if (allEntries.isEmpty()){
-            textViewNoReservations.setVisibility(View.VISIBLE);
-        }
-        else{
-            textViewNoReservations.setVisibility(View.GONE);
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            String json = (String) entry.getValue();
-            Accommodation accommodation = gson.fromJson(json, Accommodation.class);
-
-            TextView textView = new TextView(this);
-            String text = accommodation.getName() + "\n" + accommodation.getLocation() + "\nPrice: " + accommodation.getPrice() + "$/day" + "\nStay from: " + accommodation.getStartDate() + " to " + accommodation.getEndDate() + "\n" + "\n" + accommodation.getDescription();
-            textView.setText(text);
-            textView.setContentDescription("Accommodation details: " + text);
-            textView.setPadding(10, 10, 10, 10);
-            container.addView(textView);
-
-            Button changeDateButton = new Button(this);
-            changeDateButton.setText("Change Date");
-            changeDateButton.setOnClickListener(v -> {
-                showChangeDateDialog(accommodation, entry.getKey());
-            });
-            container.addView(changeDateButton);
-
-            Button deleteButton = new Button(this);
-            deleteButton.setText("Delete Reservation");
-            deleteButton.setOnClickListener(v -> {
-                confirmDeleteDialog(entry.getKey());
-            });
-            container.addView(deleteButton);
-        }
-        }
+        Button deleteButton = new Button(this);
+        deleteButton.setText("Delete Reservation");
+        deleteButton.setOnClickListener(v -> confirmDeleteDialog(accommodation.getName()));
+        container.addView(deleteButton);
     }
 
     private void confirmDeleteDialog(String accommodationKey) {
@@ -101,7 +100,11 @@ public class my_accomodations extends AppCompatActivity {
                 .setTitle("Confirm Deletion")
                 .setMessage("Are you sure you want to delete this reservation?")
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    deleteAccommodation(accommodationKey);
+                    accommodationService.deleteAccommodation(accommodationKey, () -> {
+                        displayBookedAccommodations();
+                    }, () -> {
+                        Toast.makeText(this, "Failed to delete accommodation.", Toast.LENGTH_SHORT).show();
+                    });
                 })
                 .setNegativeButton("Cancel", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -136,15 +139,14 @@ public class my_accomodations extends AppCompatActivity {
 
 
     private void saveUpdatedAccommodation(Accommodation accommodation, String accommodationKey) {
-        SharedPreferences preferences = getSharedPreferences("booked_accommodations", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(accommodation);
-        editor.putString(accommodationKey, json);
-        editor.apply();
-        displayBookedAccommodations();
+        accommodationService.saveAccommodation(accommodationKey, accommodation, () -> {
+            displayBookedAccommodations();
+        }, () -> {
+            Toast.makeText(this, "Failed to update accommodation.", Toast.LENGTH_SHORT).show();
+        });
     }
 
+    /*
     private void deleteAccommodation(String accommodationName) {
         SharedPreferences preferences = getSharedPreferences("booked_accommodations", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -152,6 +154,7 @@ public class my_accomodations extends AppCompatActivity {
         editor.apply();
         displayBookedAccommodations();
     }
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
